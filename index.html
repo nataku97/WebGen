@@ -1,8 +1,12 @@
 <html>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.js"></script>
-<body ng-app="WebGen" ng-controller="WebCtrl as web">
+<body ng-app="WebGen" ng-controller="WebCtrl as web" bgcolor="lightblue">
 
+<div>
+	<web-screen data="web.data"></web-screen>
+</div>
 
 </body>
 <script src="WebGenController.js"></script>
+<script src="WebGenDirectives.js"></script>
 </html>
