@@ -2,11 +2,19 @@
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.js"></script>
 <body ng-app="WebGen" ng-controller="WebCtrl as web" bgcolor="lightblue">
 
-<div>
+<center>
 	<web-screen data="web.data"></web-screen>
-</div>
+</center>
+<center>
+	<web-beat indicator="web.target"></web-beat>
+</center>
+<center>
+	<button ng-click="web.clicky()">{{web.state}}</button>
+</center>
 
 </body>
 <script src="WebGenController.js"></script>
 <script src="WebGenDirectives.js"></script>
+<script src="WebGenServices.js"></script>
+<script src="WebGenObjects.js"></script>
 </html>
