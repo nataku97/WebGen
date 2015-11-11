@@ -19,8 +19,7 @@ angular.module('WebGen').directive('webScreen', ['$interval', '$window', functio
 			scope.originX = scope.canvas.width/2
 			scope.originY = scope.canvas.height/2;
 
-			drawLines = function() {
-				
+			drawSupports = function() {
 				for (i = 0; i < scope.lines.length; i++) {
 
 					scope.ctx.translate(scope.originX, scope.originY);
@@ -30,9 +29,29 @@ angular.module('WebGen').directive('webScreen', ['$interval', '$window', functio
 
 					scope.ctx.rotate(-i * (Math.PI /4) );
 					scope.ctx.translate(-scope.originX, -scope.originY);
-				}
+				}	
+			};
 
-				
+			drawWeb = function() {
+				scope.ctx.translate(scope.originX, scope.originY);
+				for (m = 0; m < 8; m++) {
+					scope.ctx.beginPath();
+					
+					scope.ctx.moveTo(scope.lines[0].points[m], 0);
+					for (n = 0; n < 8; n++) {
+						
+						scope.ctx.rotate(n * (Math.PI /4) );
+						
+						scope.ctx.lineTo((scope.lines[n].points[m]*(scope.canvas.width/2)), 0);
+
+						scope.ctx.rotate(-n * (Math.PI /4) );
+					}
+					scope.ctx.lineTo((scope.lines[0].points[m]*(scope.canvas.width/2)), 0);
+					scope.ctx.stroke();
+					
+				}
+				scope.ctx.translate(-scope.originX, -scope.originY);
+
 			};
 
 			drawLine = function(line) {	
@@ -41,14 +60,15 @@ angular.module('WebGen').directive('webScreen', ['$interval', '$window', functio
 				
 				scope.ctx.moveTo(0, 0);
 				for (k = 0; k < line.points.length; k++) {
-					scope.ctx.lineTo(line.points[k], 0);
+					scope.ctx.lineTo((line.points[k]*(scope.canvas.width/2)), 0);
 				}
 				scope.ctx.stroke();
 				
 			};
 
 			scope.update = $interval(function() {
-				drawLines();
+				drawSupports();
+				drawWeb()
 			}, 16);
 
 		}

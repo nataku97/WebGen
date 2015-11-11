@@ -1,7 +1,7 @@
 angular.module('WebGen').factory(
 	"Line", function () {
 		function Line() {
-			this.points = [ 0, 0, 0, 0, 0, 0, 0, 0 ];
+			this.points = [ .05, .1, .15, .25, .35, .50, .67, .73, .9 ];
 		}
 
 		Line.prototype = {
