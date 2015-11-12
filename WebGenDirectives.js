@@ -58,15 +58,20 @@ angular.module('WebGen').directive('webScreen', ['$interval', '$window', functio
 				//begin line
 				scope.ctx.beginPath();
 				
-				scope.ctx.moveTo(0, 0);
-				for (k = 0; k < line.points.length; k++) {
+				scope.ctx.moveTo((line.points[0]*(scope.canvas.width/2)), 0);
+				for (k = 1; k < line.points.length; k++) {
 					scope.ctx.lineTo((line.points[k]*(scope.canvas.width/2)), 0);
 				}
 				scope.ctx.stroke();
 				
 			};
 
+			clearCanv = function() {
+				scope.ctx.clearRect(0, 0, scope.canvas.width, scope.canvas.height);
+			}
+
 			scope.update = $interval(function() {
+				clearCanv();
 				drawSupports();
 				drawWeb()
 			}, 16);
