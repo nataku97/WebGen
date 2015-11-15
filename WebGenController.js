@@ -4,12 +4,12 @@ angular.module('WebGen').controller('WebCtrl', ['Target', 'Line', function(Targe
 
 	this.target = new Target(2000);
 
-	this.data = [ this.target.points,
-				  this.target.points,
-				  this.target.points,
-				  this.target.points,
-				  this.target.points,
-				  this.target.points,
-				  this.target.points,
-				  this.target.points ];
+	this.data = [ this.target.line,
+				  this.target.line,
+				  this.target.line,
+				  this.target.line,
+				  this.target.line,
+				  this.target.line,
+				  this.target.line,
+				  this.target.line ];
 }]);

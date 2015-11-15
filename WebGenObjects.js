@@ -22,19 +22,19 @@ angular.module('WebGen').factory(
 			this.goal = g;
 			this.progress = 0;
 			this.current = 0;
-			this.points = new Line();
+			this.line = new Line();
 			this.running = false;
 		}
 
 		Target.prototype = {
 			goal: function() {return this.goal;},
 			progress: function() {return this.progress;},
-			points: function() {return this.points;},
+			line: function() {return this.line;},
 			current: function() {return this.current;},
 			update: function() {
 				if (this.running) {
 					this.progress += 1;
-					//if (this.points.points[this.current] > this.progress) {
+					//if (this.line.points[this.current] > this.progress) {
 					//	this.current += 1;
 					//}
 				}
@@ -48,8 +48,8 @@ angular.module('WebGen').factory(
 				this.running = true;
 			},
 			recordCurrent: function() {
-				if (this.current < this.points.points.length-1) {
-					this.points.points[this.current] = this.progress/this.goal;
+				if (this.current < this.line.points.length-1) {
+					this.line.points[this.current] = this.progress/this.goal;
 					this.current += 1;
 				}
 			}

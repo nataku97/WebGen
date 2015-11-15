@@ -86,7 +86,8 @@ angular.module('WebGen').directive('webBeat', ['$interval', '$window', 'inputSer
 
 		restrict: 'E',
 		scope: {
-			marker: '=indicator'
+			marker: '=indicator',
+			record: '=target'
 		},
 
 		template: "<canvas id='webmeter'/>",
@@ -141,9 +142,9 @@ angular.module('WebGen').directive('webBeat', ['$interval', '$window', 'inputSer
 			};
 
 			drawPoints = function() {
-				for (p = 0; p < scope.marker.points.points.length -1; p++) {
+				for (p = 0; p < scope.marker.line.points.length -1; p++) {
 					scope.ctx.beginPath();
-					scope.ctx.arc( scope.meterLength * scope.marker.points.points[p],
+					scope.ctx.arc( scope.meterLength * scope.marker.line.points[p],
 						 scope.meterY, scope.meterThickness/2, 0, 2*Math.PI);
 					scope.ctx.strokeStyle = '#827839';
 					scope.ctx.lineWidth = 3;
