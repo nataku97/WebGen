@@ -1,7 +1,10 @@
 angular.module('WebGen').factory(
 	"Line", function () {
 		function Line() {
-			this.points = [ .05, .1, .15, .25, .35, .50, .67, .73, .9 ];
+			this.points = [ .05, .1, .15, .20,
+							.25, .30, .35, .40,
+							.45, .50, .55, .60,
+							.65, .70, .75, .95 ];
 		}
 
 		Line.prototype = {
@@ -20,6 +23,7 @@ angular.module('WebGen').factory(
 			this.progress = 0;
 			this.current = 0;
 			this.points = new Line();
+			this.running = false;
 		}
 
 		Target.prototype = {
@@ -27,10 +31,24 @@ angular.module('WebGen').factory(
 			progress: function() {return this.progress;},
 			points: function() {return this.points;},
 			current: function() {return this.current;},
-			update: function() {this.progress += 1;},
+			update: function() {
+				if (this.running) {
+					this.progress += 1;
+				}
+				if (this.progress > this.goal) {
+					this.running = false;
+					this.progress = 0;
+					this.current = 0;
+				}
+			},
+			start: function() {
+				this.running = true;
+			},
 			recordCurrent: function() {
-				this.points[this.current] = this.progress/this.goal;
-				this.current += 1;
+				if (this.current < this.points.points.length-1) {
+					this.points.points[this.current] = this.progress/this.goal;
+					this.current += 1;
+				}
 			}
 		};
 

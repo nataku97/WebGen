@@ -1,16 +1,15 @@
 angular.module('WebGen', []);
 
-angular.module('WebGen').controller('WebCtrl', ['Target', 'Line', 'generationServ', function(Target, Line, generationServ) {
+angular.module('WebGen').controller('WebCtrl', ['Target', 'Line', function(Target, Line) {
 
 	this.target = new Target(2000);
-	this.template = new Line();
 
-	this.data = [ this.template,
-				  this.template,
-				  this.template,
-				  this.template,
-				  this.template,
-				  this.template,
-				  this.template,
-				  this.template ];
+	this.data = [ this.target.points,
+				  this.target.points,
+				  this.target.points,
+				  this.target.points,
+				  this.target.points,
+				  this.target.points,
+				  this.target.points,
+				  this.target.points ];
 }]);

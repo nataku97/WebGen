@@ -34,7 +34,7 @@ angular.module('WebGen').directive('webScreen', ['$interval', '$window', functio
 
 			drawWeb = function() {
 				scope.ctx.translate(scope.originX, scope.originY);
-				for (m = 0; m < 8; m++) {
+				for (m = 0; m < scope.lines[0].points.length-1; m++) {
 					scope.ctx.beginPath();
 					
 					scope.ctx.moveTo(scope.lines[0].points[m], 0);
@@ -66,14 +66,14 @@ angular.module('WebGen').directive('webScreen', ['$interval', '$window', functio
 				
 			};
 
-			clearCanv = function() {
+			clearWeb = function() {
 				scope.ctx.clearRect(0, 0, scope.canvas.width, scope.canvas.height);
 			}
 
 			scope.update = $interval(function() {
-				clearCanv();
+				clearWeb();
 				drawSupports();
-				drawWeb()
+				drawWeb();
 			}, 16);
 
 		}
@@ -81,7 +81,7 @@ angular.module('WebGen').directive('webScreen', ['$interval', '$window', functio
 	}
 }]);
 
-angular.module('WebGen').directive('webBeat', ['$interval', '$window', function($interval, $window) {
+angular.module('WebGen').directive('webBeat', ['$interval', '$window', 'inputServ', function($interval, $window, inputServ) {
 	return {
 
 		restrict: 'E',
@@ -96,62 +96,47 @@ angular.module('WebGen').directive('webBeat', ['$interval', '$window', function(
 			scope.ctx = scope.canvas.getContext('2d');
 			//set canvas dimensions
 			scope.canvas.width = $window.innerWidth * (2/3);
-			scope.canvas.height = $window.innerHeight * (1/6);
+			scope.canvas.height = $window.innerHeight * (1/3);
 
-			scope.meterX = scope.canvas.width/8;
-			scope.meterY = scope.canvas.height/2;
-			scope.meterLength = scope.canvas.width *(6/8);
+			scope.meterLength = scope.canvas.width;
+			scope.meterThickness = 14;
+			scope.meterX = 0;
+			scope.meterY = (scope.canvas.height * (2/3)) - scope.meterThickness/2;
 
 			drawMeter = function() {
 				
 				//draw main line
 				scope.ctx.beginPath();
 				scope.ctx.moveTo(scope.meterX, scope.meterY);
-				scope.ctx.lineTo(scope.meterX + scope.meterLength , scope.meterY);
-				scope.ctx.lineWidth = 4;
+				scope.ctx.lineTo(scope.meterLength, scope.meterY);
+				scope.ctx.lineWidth = scope.meterThickness;
+				scope.ctx.strokeStyle = '#000000';
 				scope.ctx.stroke();
-
-
-				//draw points
-				for (i = 0; i < 10; i++) {
-					scope.ctx.beginPath();
-					scope.ctx.moveTo(scope.meterX + i*(scope.meterLength/9), scope.meterY+10);
-					scope.ctx.lineTo(scope.meterX + i*(scope.meterLength/9), scope.meterY-10);
-
-					if (i == 0 || i == 9) {
-						scope.ctx.strokeStyle = '#000000';
-						scope.ctx.lineWidth = 3;
-					}
-					else {
-						scope.ctx.strokeStyle = '#ff0000';
-						scope.ctx.lineWidth = 2;
-					}
-
-					scope.ctx.stroke();
-				}
 
 				//draw player marker
 				scope.ctx.beginPath();
-				scope.ctx.moveTo(scope.meterX + (scope.meterLength * (scope.marker.progress/scope.marker.goal)), scope.meterY+10);
-				scope.ctx.lineTo(scope.meterX + (scope.meterLength * (scope.marker.progress/scope.marker.goal)), scope.meterY-10);
+				scope.ctx.arc((scope.meterLength * (scope.marker.progress/scope.marker.goal)),
+					 scope.meterY, scope.meterThickness, 0, 2*Math.PI );
+				
+				scope.ctx.strokeStyle = '#827839';
+				scope.ctx.lineWidth = 3;
 
-				if (i == 0 || i == 9) {
-					scope.ctx.strokeStyle = '#000085';
-					scope.ctx.lineWidth = 2;
-				}
-				if (i > 0 && i < 9) {
-					scope.ctx.strokeStyle = '#006640';
-					scope.ctx.lineWidth = 2;
-				}
-				else {
-					scope.ctx.strokeStyle = '#000066';
-					scope.ctx.lineWidth = 3;
-				}
+				scope.ctx.fillStyle = '#347C2C';
 
+				scope.ctx.fill();
 				scope.ctx.stroke();
 			};
 
+			clearMeter = function() {
+				scope.ctx.clearRect(0, 0, scope.canvas.width, scope.canvas.height);
+			};			
+
+			element.on('mousedown', function(event) {
+				inputServ.beat(scope.marker)
+			});
+
 			scope.update = $interval(function() {
+				clearMeter();
 				drawMeter();
 			}, 16);
 		}
