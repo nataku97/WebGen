@@ -34,6 +34,9 @@ angular.module('WebGen').factory(
 			update: function() {
 				if (this.running) {
 					this.progress += 1;
+					//if (this.points.points[this.current] > this.progress) {
+					//	this.current += 1;
+					//}
 				}
 				if (this.progress > this.goal) {
 					this.running = false;

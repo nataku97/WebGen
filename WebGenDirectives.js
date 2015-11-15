@@ -103,8 +103,19 @@ angular.module('WebGen').directive('webBeat', ['$interval', '$window', 'inputSer
 			scope.meterX = 0;
 			scope.meterY = (scope.canvas.height * (2/3)) - scope.meterThickness/2;
 
+			scope.beatButtonX = scope.canvas.width * (6/16);
+			scope.beatButtonY = scope.canvas.height * (1/5);
+			scope.beatButtonWidth = scope.canvas.width * (4/16);
+			scope.beatButtonHeight = scope.canvas.height * (1/5);
+
+			scope.beatButtonTextX = scope.canvas.width * (7/16);
+			scope.beatButtonTextY = scope.beatButtonY + (scope.canvas.height * (3/20));
+			scope.beatButtonText = "";
+			scope.ctx.font = "32px Arial";
+
 			drawMeter = function() {
-				
+				drawBeatButton();
+
 				//draw main line
 				scope.ctx.beginPath();
 				scope.ctx.moveTo(scope.meterX, scope.meterY);
@@ -113,12 +124,14 @@ angular.module('WebGen').directive('webBeat', ['$interval', '$window', 'inputSer
 				scope.ctx.strokeStyle = '#000000';
 				scope.ctx.stroke();
 
+				drawPoints();
+
 				//draw player marker
 				scope.ctx.beginPath();
 				scope.ctx.arc((scope.meterLength * (scope.marker.progress/scope.marker.goal)),
 					 scope.meterY, scope.meterThickness, 0, 2*Math.PI );
 				
-				scope.ctx.strokeStyle = '#827839';
+				scope.ctx.strokeStyle = '#752C7D';
 				scope.ctx.lineWidth = 3;
 
 				scope.ctx.fillStyle = '#347C2C';
@@ -126,6 +139,44 @@ angular.module('WebGen').directive('webBeat', ['$interval', '$window', 'inputSer
 				scope.ctx.fill();
 				scope.ctx.stroke();
 			};
+
+			drawPoints = function() {
+				for (p = 0; p < scope.marker.points.points.length -1; p++) {
+					scope.ctx.beginPath();
+					scope.ctx.arc( scope.meterLength * scope.marker.points.points[p],
+						 scope.meterY, scope.meterThickness/2, 0, 2*Math.PI);
+					scope.ctx.strokeStyle = '#827839';
+					scope.ctx.lineWidth = 3;
+
+					scope.ctx.fillStyle = '#657383';
+
+					scope.ctx.fill();
+					scope.ctx.stroke();
+				}
+			};
+
+			drawBeatButton = function() {
+				scope.ctx.rect(scope.beatButtonX, scope.beatButtonY, 
+						scope.beatButtonWidth, scope.beatButtonHeight);
+
+				if (scope.marker.running) {
+					scope.ctx.fillStyle = '#6AA121';
+					scope.beatButtonTextX = scope.canvas.width * (29/64);
+					scope.beatButtonText = "Boom!";
+
+				}
+				else {
+					scope.ctx.fillStyle = '#FF2400';
+					scope.beatButtonTextX = scope.canvas.width * (25/64);
+					scope.beatButtonText = "Press to Start";
+				}
+				scope.ctx.fill();
+
+				scope.ctx.fillStyle = '#000000';
+				scope.ctx.fillText(scope.beatButtonText,
+						scope.beatButtonTextX,
+						scope.beatButtonTextY);
+			}
 
 			clearMeter = function() {
 				scope.ctx.clearRect(0, 0, scope.canvas.width, scope.canvas.height);
